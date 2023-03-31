@@ -1,10 +1,17 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true, // Recommended for the `pages` directory, default in `app`.
-  experimental: {
-    // Required:
-    appDir: true,
-  },
-};
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { PHASE_DEVELOPMENT_SERVER } = require('next/constants');
 
-module.exports = nextConfig;
+module.exports = (phase, { defaultConfig }) => {
+  const config = {
+    /* config options for all phases except development here */
+    env: {
+      API_ROOT: process.env.API_ROOT,
+    },
+  };
+  if (phase === PHASE_DEVELOPMENT_SERVER) {
+    /* development only config options here */
+    config.env.phase = phase;
+  }
+
+  return config;
+};
