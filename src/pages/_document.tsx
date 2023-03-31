@@ -1,8 +1,8 @@
 import { Html, Head, Main, NextScript } from 'next/document';
 import Script from 'next/script';
+import { CssBaseline } from '@nextui-org/react';
 
 import { getCssText } from '@/config/stitches';
-import { CssBaseline } from '@nextui-org/react';
 
 function MyDocument(props) {
   console.log(props);
