@@ -1,7 +1,7 @@
 import React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { NextUIProvider } from '@nextui-org/react';
 
+import { NextUIProvider } from '@nextui-org/react';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import type { AppProps } from 'next/app';
 
