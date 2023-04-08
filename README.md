@@ -1,18 +1,19 @@
 # Citograph
 
-Citograph is an open source tool for visualizing and exploring citations and references between sources. It allows you to extract citation data from Zotero files and generate a JSON file representing the graph of citations and references between sources. This JSON file can then be passed to Excalidraw to render the citation graph as a diagram.
+Citograph is an open source tool for visualizing and exploring citations and references between sources. It allows you to search Semantic Scholar's database for academic papers and extract citation data from them, generating a JSON file representing the graph of citations and references between the selected papers. This JSON file can then be passed to Excalidraw to render the citation graph as a diagram.
 
 ## Usage
 
 Citograph can be used to:
 
-- Visualize citations and references between sources.
-- Explore the connections between sources.
+- Visualize citations and references between selected academic papers.
+- Explore the connections between the selected papers.
 - Analyze citation patterns and trends.
 
 ## Features
 
-- Extract citation data from Zotero files.
+- Search Semantic Scholar's database for academic papers.
+- Extract citation data from selected papers.
 - Generate a JSON file representing the citation graph.
 - Pass the JSON file to Excalidraw to render the citation graph as a diagram.
 
@@ -34,12 +35,12 @@ We welcome contributions to Citograph! If you're interested in contributing, ple
 
 ## License
 
-Citograph is released under the Apache 2 License. See the [LICENSE](LICENSE) file for details.
+Citograph is released under the Apache 2 License. See the `LICENSE` file for details.
 
 ## Acknowledgments
 
-Citograph was inspired by Zotero and Excalidraw. We'd like to thank the developers of these tools for their contributions to the open source community.
+Citograph was inspired by Semantic Scholar and Excalidraw. We'd like to thank the developers of these tools for their contributions to the open source community.
 
 ## Contact
 
-If you have any questions or feedback about Citograph, please contact us at [contact@citograph.com](mailto:contact@citograph.com).
+If you have any questions or feedback about Citograph, please contact us at contact@citograph.com.
