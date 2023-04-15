@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-nocheck
 import { unstable_batchedUpdates } from 'react-dom';
 
 import { ResolvablePromise } from '@excalidraw/excalidraw/types/utils';

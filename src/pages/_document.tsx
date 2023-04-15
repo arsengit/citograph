@@ -4,7 +4,7 @@ import { CssBaseline } from '@nextui-org/react';
 
 import { getCssText } from '@/config/stitches';
 
-function MyDocument(props) {
+function MyDocument() {
   return (
     <Html lang='en'>
       <Head>
@@ -34,14 +34,6 @@ function MyDocument(props) {
       </body>
     </Html>
   );
-}
-
-async function getInitialProps(ctx) {
-  const initialProps = await Document.getInitialProps(ctx);
-  return {
-    ...initialProps,
-    styles: React.Children.toArray([initialProps.styles]),
-  };
 }
 
 export default MyDocument;
