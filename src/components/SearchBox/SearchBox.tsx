@@ -30,7 +30,7 @@ function SearchBox() {
     },
   );
 
-  const handleSearch = (e) => {
+  const handleSearch = (e: any) => {
     const { value } = e.target;
     setSearchTerm(value);
   };
@@ -53,7 +53,7 @@ function SearchBox() {
       {!isLoading && data?.data && (
         <Card className='papers-card' css={{ mw: 500 }}>
           <Box as='ul' height='300px' css={{ overflow: 'auto' }}>
-            {data.data.map((paper) => (
+            {data.data.map((paper: any) => (
               <SearchItem key={paper.paperId}>
                 <Text
                   title={paper.title}
@@ -75,7 +75,7 @@ function SearchBox() {
                     className='ScrollBar__hidden'
                     css={{ ml: '$5', gap: '$5', overflow: 'auto' }}
                   >
-                    {paper.authors.map((author) => (
+                    {paper.authors.map((author: any) => (
                       <Tooltip key={author.authorId} content={author.name}>
                         <Avatar
                           size='xs'

@@ -12,12 +12,12 @@ import { DialogContent, DialogOverlay } from '../kit/Dialog/Dialog.style';
 import { Box, Icon, Text } from '../kit';
 import IconButton from '../kit/IconButton';
 
+import { IHotkeySearchItemProps } from './SearchWithHotKey.d';
 import {
   ResultItem,
   SearchInput,
   SearchInputContainer,
-} from './SearchWithHotKey.style';
-import { IHotkeySearchItemProps } from './SearchWithHotKey.d';
+} from './SearchWithHotkey.style';
 
 const searchData: IHotkeySearchItemProps[] = [
   {
