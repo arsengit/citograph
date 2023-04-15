@@ -5,7 +5,6 @@ import { CssBaseline } from '@nextui-org/react';
 import { getCssText } from '@/config/stitches';
 
 function MyDocument(props) {
-  console.log(props);
   return (
     <Html lang='en'>
       <Head>

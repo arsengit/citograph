@@ -22,6 +22,14 @@ export const global: { [key: string]: any } = {
   '#__next': {
     height: '100%',
   },
+  '.ScrollBar__hidden': {
+    '--ms-overflow-style': 'none',
+    '--scrollbar-width': 'none',
+    scrollbarWidth: 'none',
+    '&::-webkit-scrollbar': {
+      display: 'none',
+    },
+  },
   '@font-face': [
     {
       fontFamily: 'Inconsolata',

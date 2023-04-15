@@ -43,10 +43,14 @@ async function parseResponse<T>(response: Response): Promise<T> {
  * @example
  * const response = await get<T>(endpoint);
  */
-export const get = async <T>(endpoint: string): Promise<T> => {
-  const response = await fetch(`${API_ROOT}${endpoint}`, {
+export const get = async <T>(
+  endpoint: string,
+  headersObj?: any,
+  useApiRoot = true,
+): Promise<T> => {
+  const response = await fetch(`${useApiRoot ? API_ROOT : ''}${endpoint}`, {
     method: 'GET',
-    headers: getRequestHeaders(),
+    headers: { ...getRequestHeaders(), ...headersObj },
   });
   return parseResponse<T>(response);
 };
