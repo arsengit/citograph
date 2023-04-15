@@ -9,8 +9,6 @@ const SearchBoxWrapper = styled('div', {
   '& .papers-card': {
     position: 'absolute',
     top: 'calc(100% + 8px)',
-    left: 0,
-    right: 0,
   },
 });
 

@@ -8,7 +8,6 @@ import { routes } from '@/routes/routes';
 import Container from '@/config/stitches/foundations/layout';
 
 import { Box } from '../kit';
-import SearchWithHotkey from '../SearchWithHotkey/SearchWithHotkey';
 
 import { StyledContainer, StyledLink } from './Sidebar.style';
 
@@ -38,7 +37,6 @@ function Sidebar(): React.FunctionComponentElement<React.ReactNode> {
             </StyledLink>
           ))}
         </Box>
-        <Box>{/* <SearchWithHotkey /> */}</Box>
       </Container>
     </StyledContainer>
   );
