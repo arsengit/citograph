@@ -4,9 +4,15 @@ import { styled } from '@/config/stitches';
 
 const StyledContainer = styled('div', {
   width: '100%',
-  bc: '#1d2253',
+  bc: 'black',
   p: '$5 0',
 });
+
+//white colors list for background hex code
+// $white: #fff;
+// $white-100: #f8f8f8;
+// $white-200: #f1f1f1;
+// $white-300: #eaeaea;
 
 const StyledLink = styled(Link, {
   color: '$textPrimary30',
