@@ -1,4 +1,4 @@
-import { IconClipboardList, IconHome } from '@tabler/icons-react';
+import { IconHome } from '@tabler/icons-react';
 
 import { RoutesEnum } from '@/config/enums/routesEnum';
 

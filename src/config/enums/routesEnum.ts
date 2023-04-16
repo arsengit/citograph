@@ -9,6 +9,7 @@
 enum RoutesEnum {
   HOME = '/',
   Projects = '/projects',
+  PAPER = '/paper',
 }
 
 export { RoutesEnum };
