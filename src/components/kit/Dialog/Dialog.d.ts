@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { DialogProps } from '@radix-ui/react-dialog';
 export interface IDialogProps extends DialogProps {
   /**
