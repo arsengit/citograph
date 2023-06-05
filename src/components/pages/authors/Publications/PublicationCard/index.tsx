@@ -6,7 +6,6 @@ import { Box, Text } from '@/components/kit';
 import { PublicationCardContainer } from './styles';
 
 function PublicationCard({ paper }: any) {
-  console.log(paper);
   return (
     <PublicationCardContainer>
       <Link href={`/paper/${paper.paperId}`}>
@@ -18,6 +17,7 @@ function PublicationCard({ paper }: any) {
         <Text>Authors:</Text>
         <Box
           ai='center'
+          flex='1'
           display='flex'
           className='ScrollBar__hidden'
           css={{ ml: '$5', gap: '$5', overflow: 'auto', width: '50%' }}

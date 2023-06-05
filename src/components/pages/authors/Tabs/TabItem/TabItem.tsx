@@ -4,7 +4,7 @@ import { Text } from '@/components/kit';
 
 function TabItem({ card, tab, onTabClick }: any) {
   return (
-    <Grid onClick={onTabClick} id={card.id} xs={3} key={card.id}>
+    <Grid onClick={onTabClick} id={card.id} xs={4} key={card.id}>
       <Card
         css={{
           h: '$20',

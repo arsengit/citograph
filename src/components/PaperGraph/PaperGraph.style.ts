@@ -1,8 +1,8 @@
 import { styled } from '@/config/stitches';
 
 const GraphContainer = styled('div', {
-  display: 'flex',
-  position: 'relative',
+  // display: 'flex',
+  // position: 'relative',
   justifyContent: 'center',
   alignItems: 'center',
   width: '100%',
@@ -10,8 +10,6 @@ const GraphContainer = styled('div', {
   backgroundColor: '#fff',
   borderRadius: '8px',
   overflow: 'hidden',
-  position: 'relative',
-
   '& .link': {
     stroke: '#999',
     strokeOpacity: 0.3,

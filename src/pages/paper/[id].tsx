@@ -190,11 +190,62 @@ const PaperPage: NextPage<PaperPageProps> = ({ id }: { id: string }) => {
   // }, [data, citationsData, referencesData]);
 
   const combinedData = React.useMemo(() => {
+    const allReferencesCitationsKeys = {};
+    const allCitationsCitationsKeys = {};
+    const links = [];
+
+    for (let i = 0; i < mock.references.length; i++) {
+      if (mock.references[i].citations?.length > 0) {
+        for (let j = 0; j < mock.references[i].citations.length; j++) {
+          if (
+            !allReferencesCitationsKeys[mock.references[i].citations[j].paperId]
+          ) {
+            allReferencesCitationsKeys[
+              mock.references[i].citations[j].paperId
+            ] = mock.references[i].paperId;
+          }
+        }
+      }
+    }
+    for (let i = 0; i < mock.citations.length; i++) {
+      if (mock.citations[i].citations?.length > 0) {
+        for (let j = 0; j < mock.citations[i].citations.length; j++) {
+          if (
+            !allCitationsCitationsKeys[mock.citations[i].citations[j].paperId]
+          ) {
+            allCitationsCitationsKeys[mock.citations[i].citations[j].paperId] =
+              mock.citations[i].paperId;
+          }
+        }
+      }
+    }
+
     const referencesWithCitations = mock?.references?.map(
       (reference: any, index: number) => {
-        // const citations = referencesData?.find(
-        //   (citation: any) => citation?.paperId === reference.paperId,
-        // )?.citations;
+        const keysToCitations = new Set();
+        reference.citations?.forEach((citation: any) => {
+          if (allCitationsCitationsKeys[citation.paperId]) {
+            keysToCitations.add(allCitationsCitationsKeys[citation.paperId]);
+          }
+        });
+        if (reference.influentialCitationCount > 500) {
+          console.log(reference.influentialCitationCount);
+          keysToCitations.forEach((key: any) => {
+            if (
+              !links.find(
+                (link) =>
+                  (link.source === reference.paperId && link.target === key) ||
+                  (link.source === key && link.target === reference.paperId),
+              )
+            ) {
+              links.push({
+                source: reference.paperId,
+                target: key,
+                height: 1,
+              });
+            }
+          });
+        }
 
         return {
           id: reference.paperId,
@@ -211,10 +262,35 @@ const PaperPage: NextPage<PaperPageProps> = ({ id }: { id: string }) => {
 
     const citationsWithCitations = mock?.citations?.map(
       (citation: any, index: number) => {
-        // const citations = citationsData?.find(
-        //   (c: any) => c?.paperId === citation.paperId,
-        // )?.citations;
+        const keysToCitations = new Set();
+        links.push({
+          source: citation.paperId,
+          target: mock.paperId,
+        });
+        citation.citations?.forEach((citation: any) => {
+          if (allReferencesCitationsKeys[citation.paperId]) {
+            keysToCitations.add(allReferencesCitationsKeys[citation.paperId]);
+          }
+        });
 
+        if (citation.influentialCitationCount > 500) {
+          console.log(citation.influentialCitationCount);
+          keysToCitations.forEach((key: any) => {
+            if (
+              !links.find(
+                (link) =>
+                  (link.source === citation.paperId && link.target === key) ||
+                  (link.source === key && link.target === citation.paperId),
+              )
+            ) {
+              links.push({
+                source: citation.paperId,
+                target: key,
+                height: 1,
+              });
+            }
+          });
+        }
         return {
           id: citation.paperId,
           title: citation.title,
@@ -234,7 +310,7 @@ const PaperPage: NextPage<PaperPageProps> = ({ id }: { id: string }) => {
       year: mock?.year,
       type: 'main',
       link: mock?.url,
-      x: 0,
+      x: -300,
       y: 0,
       citations: citationsWithCitations,
       references: referencesWithCitations,
@@ -258,34 +334,6 @@ const PaperPage: NextPage<PaperPageProps> = ({ id }: { id: string }) => {
       }
     }, []);
 
-    // Add the citation links between the nodes
-    const links = [];
-
-    nodes.forEach((sourceNode) => {
-      sourceNode.citations?.forEach((targetPaperId: string) => {
-        const targetNode = nodes.find((node) => node.id === targetPaperId);
-        if (targetNode) {
-          // Check if the link already exists
-          console.log(sourceNode.id, targetNode.id);
-          const linkExists = links.find(
-            (link) =>
-              (link.source.id === sourceNode.id &&
-                link.target.id === targetNode.id) ||
-              (link.source.id === targetNode.id &&
-                link.target.id === sourceNode.id),
-          );
-
-          // If the link doesn't exist, add it to the links array
-          if (!linkExists) {
-            links.push({
-              source: sourceNode,
-              target: targetNode,
-            });
-          }
-        }
-      });
-    });
-    console.log(nodes);
     return { nodes, links };
   }, []);
 
@@ -297,7 +345,7 @@ const PaperPage: NextPage<PaperPageProps> = ({ id }: { id: string }) => {
           <Loading />
         </Box>
       ) : (
-        <Box p='0 $9' display='flex'>
+        <Box p='0 $9'>
           {/* <LayoutContainer> */}
           <Box width='80%'>
             <Card css={{ padding: '$11 $9' }}>

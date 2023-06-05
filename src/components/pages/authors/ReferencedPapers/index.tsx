@@ -5,16 +5,17 @@ import { Pagination } from '@nextui-org/react';
 
 import { Box } from '@/components/kit';
 
-import PublicationCard from './PublicationCard';
+import PublicationCard from '../Publications/PublicationCard';
 
-function Publications({ papers }: any) {
+function ReferencedPapers({ data }: any) {
   const { currentPage, totalPages, setPage, startIndex, endIndex } =
-    usePagination({ totalItems: papers.length, initialPageSize: 15 });
+    usePagination({ totalItems: data.length, initialPageSize: 15 });
 
   const currentItems = React.useMemo(() => {
-    return papers.slice(startIndex, endIndex);
-  }, [papers, startIndex, endIndex]);
+    return data.slice(startIndex, endIndex);
+  }, [data, startIndex, endIndex]);
 
+  //   console.log(currentItems, startIndex, endIndex);
   return (
     <Box display='flex' fd='column' css={{ gap: '$9' }}>
       <Box
@@ -30,4 +31,4 @@ function Publications({ papers }: any) {
   );
 }
 
-export default Publications;
+export default ReferencedPapers;
