@@ -4,12 +4,16 @@ import React from 'react';
 import { useQuery } from 'react-query';
 
 import { Avatar, Card, Link, Loading, Tooltip } from '@nextui-org/react';
+import dynamic from 'next/dynamic';
 
 import { Box, Text } from '@/components/kit';
 import LayoutContainer from '@/config/stitches/foundations/layout';
-import Graph from '@/components/PaperGraph/PaperGraph';
+// import Graph from '@/components/PaperGraph/PaperGraph';
 import { mock } from '@/components/PaperGraph/mockPaperData';
 
+const Graph = dynamic(() => import('@/components/PaperGraph/PaperGraph'), {
+  ssr: false,
+});
 type PaperPageProps = {
   id: string;
 };
@@ -222,14 +226,19 @@ const PaperPage: NextPage<PaperPageProps> = ({ id }: { id: string }) => {
 
     const referencesWithCitations = mock?.references?.map(
       (reference: any, index: number) => {
-        const keysToCitations = new Set();
-        reference.citations?.forEach((citation: any) => {
-          if (allCitationsCitationsKeys[citation.paperId]) {
-            keysToCitations.add(allCitationsCitationsKeys[citation.paperId]);
-          }
+        links.push({
+          source: reference.paperId,
+          target: mock.paperId,
+          distance: 300,
         });
-        if (reference.influentialCitationCount > 500) {
-          console.log(reference.influentialCitationCount);
+
+        if (reference.influentialCitationCount > 300) {
+          const keysToCitations = new Set();
+          reference.citations?.slice(0, 15).forEach((citation: any) => {
+            if (allCitationsCitationsKeys[citation.paperId]) {
+              keysToCitations.add(allCitationsCitationsKeys[citation.paperId]);
+            }
+          });
           keysToCitations.forEach((key: any) => {
             if (
               !links.find(
@@ -241,7 +250,7 @@ const PaperPage: NextPage<PaperPageProps> = ({ id }: { id: string }) => {
               links.push({
                 source: reference.paperId,
                 target: key,
-                height: 1,
+                distance: 100,
               });
             }
           });
@@ -251,30 +260,34 @@ const PaperPage: NextPage<PaperPageProps> = ({ id }: { id: string }) => {
           id: reference.paperId,
           title: reference.title,
           year: reference.year,
+          height: 1,
           type: 'reference',
+          size: 12,
+          color: 'rgb(232, 193, 160)',
           link: reference.url,
           x: index + 6,
           y: 50,
-          citations: reference.citations,
+          // citations: reference.citations,
         };
       },
     );
 
     const citationsWithCitations = mock?.citations?.map(
       (citation: any, index: number) => {
-        const keysToCitations = new Set();
         links.push({
           source: citation.paperId,
           target: mock.paperId,
-        });
-        citation.citations?.forEach((citation: any) => {
-          if (allReferencesCitationsKeys[citation.paperId]) {
-            keysToCitations.add(allReferencesCitationsKeys[citation.paperId]);
-          }
+          distance: 100,
         });
 
-        if (citation.influentialCitationCount > 500) {
-          console.log(citation.influentialCitationCount);
+        if (citation.influentialCitationCount > 300) {
+          const keysToCitations = new Set();
+
+          citation.citations?.slice(0, 15).forEach((citation: any) => {
+            if (allReferencesCitationsKeys[citation.paperId]) {
+              keysToCitations.add(allReferencesCitationsKeys[citation.paperId]);
+            }
+          });
           keysToCitations.forEach((key: any) => {
             if (
               !links.find(
@@ -286,7 +299,7 @@ const PaperPage: NextPage<PaperPageProps> = ({ id }: { id: string }) => {
               links.push({
                 source: citation.paperId,
                 target: key,
-                height: 1,
+                distance: 100,
               });
             }
           });
@@ -295,11 +308,14 @@ const PaperPage: NextPage<PaperPageProps> = ({ id }: { id: string }) => {
           id: citation.paperId,
           title: citation.title,
           year: citation.year,
-          type: 'citation',
-          link: `https://www.semanticscholar.org/paper/${citation.paperId}`,
-          x: index + 6,
-          y: -50,
-          citations: citation.citations,
+          // type: 'citation',
+          height: 1,
+          size: 12,
+          color: 'rgb(97, 205, 187)',
+          // link: `https://www.semanticscholar.org/paper/${citation.paperId}`,
+          // x: index + 6,
+          // y: -50,
+          // citations: citation.citations,
         };
       },
     );
@@ -309,11 +325,14 @@ const PaperPage: NextPage<PaperPageProps> = ({ id }: { id: string }) => {
       title: mock?.title,
       year: mock?.year,
       type: 'main',
-      link: mock?.url,
-      x: -300,
-      y: 0,
-      citations: citationsWithCitations,
-      references: referencesWithCitations,
+      height: 10,
+      size: 32,
+      color: 'rgb(244, 117, 96)',
+      // link: mock?.url,
+      // x: -300,
+      // y: 0,
+      // citations: citationsWithCitations,
+      // references: referencesWithCitations,
     };
 
     // Merge and deduplicate the references, citations and main data
