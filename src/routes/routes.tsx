@@ -1,4 +1,4 @@
-import { IconClipboardList, IconHome } from '@tabler/icons-react';
+import { IconHome, IconMan } from '@tabler/icons-react';
 
 import { RoutesEnum } from '@/config/enums/routesEnum';
 
@@ -17,9 +17,16 @@ import { IRoute } from './routes.d';
 const routes: Record<string, IRoute> = {
   DASHBOARD: {
     path: RoutesEnum.HOME,
-    showInSidebar: false,
+    showInSidebar: true,
     displayName: 'Home',
     icon: <IconHome size={20} />,
+    isExact: true,
+  },
+  AUTHORS: {
+    path: RoutesEnum.AUTHORS,
+    showInSidebar: true,
+    displayName: 'Authors',
+    icon: <IconMan size={20} />,
     isExact: true,
   },
 };

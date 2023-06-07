@@ -15,7 +15,6 @@ const SearchBoxWrapper = styled('div', {
 const SearchItem = styled('li', {
   display: 'flex',
   fd: 'column',
-  height: '48px',
   '&:hover': {
     backgroundColor: '$gray-100',
   },

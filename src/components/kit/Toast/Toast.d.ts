@@ -1,6 +1,7 @@
+import React from 'react';
+
 import * as Toast from '@radix-ui/react-toast';
 import { CSS } from '@config/stitches/types';
-
 export interface IToastProps extends Toast.ToastProps {
   /**
    * @required

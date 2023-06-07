@@ -1,5 +1,6 @@
-import { CSS, ColorPaletteType } from '@/config/stitches';
+import React from 'react';
 
+import { CSS, ColorPaletteType } from '@/config/stitches';
 export interface IIconButtonProps
   extends Partial<React.HTMLAttributes<HTMLButtonElement>> {
   /**

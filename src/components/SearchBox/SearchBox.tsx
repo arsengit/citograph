@@ -2,6 +2,7 @@ import React from 'react';
 import { useQuery } from 'react-query';
 
 import { Avatar, Card, Input, Loading, Tooltip } from '@nextui-org/react';
+import Link from 'next/link';
 
 import { useDebounce } from '@/hooks/useDebounce';
 
@@ -41,7 +42,7 @@ function SearchBox() {
         size='$8'
         css={{ mb: '$9', textAlign: 'center', letterSpacing: 'unset' }}
       >
-        easily find papers and authors on Semantic Scholar with Citograph 📚
+        Easily find papers and authors on Semantic Scholar with Citograph 📚
       </Text>
       <Input
         onChange={handleSearch}
@@ -55,18 +56,19 @@ function SearchBox() {
           <Box as='ul' height='300px' css={{ overflow: 'auto' }}>
             {data.data.map((paper: any) => (
               <SearchItem key={paper.paperId}>
-                <Text
-                  title={paper.title}
-                  size='$4'
-                  css={{
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                  }}
-                >
-                  {paper.title}
-                </Text>
-
+                <Link href={`/paper/${paper.paperId}`}>
+                  <Text
+                    title={paper.title}
+                    size='$4'
+                    css={{
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}
+                  >
+                    {paper.title}
+                  </Text>
+                </Link>
                 <Box ai='center' display='flex' mt='$4'>
                   <Text>Authors:</Text>
                   <Box
