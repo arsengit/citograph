@@ -7,7 +7,7 @@ import { PublicationCardContainer } from './styles';
 
 function PublicationCard({ paper }: any) {
   return (
-    <PublicationCardContainer>
+    <PublicationCardContainer className='PublicationCard'>
       <Link href={`/paper/${paper.paperId}`}>
         <Text color='$primary' as='h2' size='$5' css={{ mb: '$2' }}>
           {paper.title}
