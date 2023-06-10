@@ -78,14 +78,22 @@ function SearchBox() {
                     css={{ ml: '$5', gap: '$5', overflow: 'auto' }}
                   >
                     {paper.authors.map((author: any) => (
-                      <Tooltip key={author.authorId} content={author.name}>
-                        <Avatar
-                          size='xs'
-                          squared
-                          key={author.authorId}
-                          text={author.name}
-                        />
-                      </Tooltip>
+                      <Link
+                        key={author.authorId}
+                        href={`/authors/${author.authorId}`}
+                      >
+                        <Tooltip content={author.name}>
+                          <Avatar
+                            style={{
+                              cursor: 'pointer',
+                            }}
+                            size='xs'
+                            squared
+                            key={author.authorId}
+                            text={author.name}
+                          />
+                        </Tooltip>
+                      </Link>
                     ))}
                   </Box>
                 </Box>

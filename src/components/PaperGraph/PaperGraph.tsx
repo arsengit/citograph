@@ -8,15 +8,17 @@ import {
 
 import { Box, Text } from '../kit';
 
-import { GraphContainer, Popover } from './PaperGraph.style';
+import {
+  CitationsLegendItem,
+  GraphContainer,
+  ReferencesLegendItem,
+} from './PaperGraph.style';
 
-const Graph = ({ data, activeNode }: any) => {
-  const [selectedNode, setSelectedNode] = React.useState([]);
+const Graph = ({ data, activeNode, onActiveNodeChange, onMount }: any) => {
   const graphRef = React.useRef<GraphCanvasRef | null>(null);
   const {
     actives,
     onNodeClick,
-    selections,
     onCanvasClick,
     onNodePointerOver,
     onNodePointerOut,
@@ -27,24 +29,37 @@ const Graph = ({ data, activeNode }: any) => {
     pathHoverType: 'all',
     pathSelectionType: 'all',
   });
+  const [selectedNode, setSelectedNode] = React.useState([]);
 
-  // console.log(selections);
+  const layout = recommendLayout(data.nodes, data.links);
 
-  // const layout = recommendLayout(data.nodes, data.links);
+  const onNodeClickHandler = (node: any, props: any) => {
+    onActiveNodeChange([node.id]);
+    setSelectedNode([node.id]);
+    onNodeClick(node, props);
+  };
 
-  // const onNodeClickHandler = (node: any) => {
-  //   setSelectedNode([node.id]);
-  //   onNodeClick(node);
-  // };
+  React.useEffect(() => {
+    if (activeNode[0] !== selectedNode[0]) {
+      setSelectedNode(activeNode);
+    }
+  }, [activeNode, selectedNode]);
 
-  // React.useEffect(() => {
-  //   if (activeNode !== selectedNode[0]) {
-  //     setSelectedNode([activeNode]);
-  //   }
-  // }, [activeNode]);
+  React.useEffect(() => {
+    onMount();
+  }, []);
 
   return (
     <GraphContainer>
+      <Box css={{ gap: '$9' }} display='flex' ai='center'>
+        <Box display='flex' ai='center'>
+          <CitationsLegendItem />
+          <Text>Citations</Text>
+        </Box>
+        <Box display='flex' ai='center'>
+          <ReferencesLegendItem /> <Text>References</Text>
+        </Box>
+      </Box>
       <Box
         css={{
           height: '100%',
@@ -63,15 +78,19 @@ const Graph = ({ data, activeNode }: any) => {
           edgeInterpolation='curved'
           clusterAttribute='type'
           layoutType='forceDirected2d'
-          selections={selections}
+          selections={selectedNode}
           animated={false}
           actives={actives}
           draggable
-          // layout={layout}
+          layout={layout}
           onNodePointerOver={onNodePointerOver}
           onNodePointerOut={onNodePointerOut}
-          onCanvasClick={onCanvasClick}
-          onNodeClick={onNodeClick}
+          onCanvasClick={(event) => {
+            onCanvasClick(event);
+            onActiveNodeChange([]);
+            setSelectedNode([]);
+          }}
+          onNodeClick={onNodeClickHandler}
         />
       </Box>
     </GraphContainer>

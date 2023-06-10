@@ -5,20 +5,21 @@ import { useQuery } from 'react-query';
 
 import {
   Avatar,
-  Button,
   Card,
-  Grid,
   Link,
   Loading,
+  Spinner,
   Tooltip,
 } from '@nextui-org/react';
 import dynamic from 'next/dynamic';
 
 import { Box, Text } from '@/components/kit';
-import LayoutContainer from '@/config/stitches/foundations/layout';
-import PublicationCard from '@/components/pages/authors/Publications/PublicationCard';
 import Tabs from '@/components/kit/Tabs';
 import CitationItem from '@/components/pages/papers/CitationItem/CitationItem';
+import PublicationCard from '@/components/pages/authors/Publications/PublicationCard';
+import Separator from '@/components/kit/Separator';
+
+import { CitationItemListContainer } from '../../components/pages/papers/CitationItem/CitationItem.style';
 
 const Graph = dynamic(() => import('@/components/PaperGraph/PaperGraph'), {
   ssr: false,
@@ -76,6 +77,8 @@ const fetchReferences = async (paper: any) => {
 };
 
 const PaperPage: NextPage<PaperPageProps> = ({ id }: { id: string }) => {
+  const [activeNode, setActiveNode] = React.useState<any>([]);
+  const [graphMounted, setGraphMounted] = React.useState(false);
   const { data, isLoading, error } = useQuery(['paper', id], () =>
     fetchMainPaperById(id),
   );
@@ -122,7 +125,6 @@ const PaperPage: NextPage<PaperPageProps> = ({ id }: { id: string }) => {
     const allReferencesCitationsKeys = {};
     const allCitationsCitationsKeys = {};
     const links = [];
-    console.log(processedData);
     if (processedData?.references?.length > 0) {
       for (let i = 0; i < processedData?.references?.length; i++) {
         if (processedData?.references[i].citations?.length > 0) {
@@ -208,7 +210,10 @@ const PaperPage: NextPage<PaperPageProps> = ({ id }: { id: string }) => {
             id: reference.paperId,
             title: reference.title,
             year: reference.year,
-            label: reference.title,
+            data: {
+              type: reference.year,
+            },
+            label: reference.title.slice(0, 20),
             influence: reference.influentialCitationCount,
             type: 'reference',
             size: 8,
@@ -263,7 +268,10 @@ const PaperPage: NextPage<PaperPageProps> = ({ id }: { id: string }) => {
             title: citation.title,
             year: citation.year,
             type: 'citation',
-            label: citation.title,
+            data: {
+              type: citation.year,
+            },
+            label: citation.title.slice(0, 20),
             height: 1,
             size: 8,
             fill: 'rgb(97, 205, 187)',
@@ -275,7 +283,10 @@ const PaperPage: NextPage<PaperPageProps> = ({ id }: { id: string }) => {
         id: processedData?.paperId,
         title: processedData?.title,
         year: processedData?.year,
-        label: processedData?.title,
+        data: {
+          type: processedData?.year,
+        },
+        label: processedData?.title.slice(0, 20),
         type: 'main',
         height: 10,
         size: 12,
@@ -304,7 +315,21 @@ const PaperPage: NextPage<PaperPageProps> = ({ id }: { id: string }) => {
     return { nodes: [], links: [] };
   }, [processedData]);
 
-  console.log(combinedData);
+  const onNodeClick = (nodeId: any) => {
+    setActiveNode([nodeId]);
+  };
+
+  const activeNodeData = React.useMemo(() => {
+    return (
+      processedData?.citations?.find(
+        (citation: any) => citation.paperId === activeNode[0],
+      ) ||
+      processedData?.references?.find(
+        (reference: any) => reference.paperId === activeNode[0],
+      ) ||
+      processedData
+    );
+  }, [processedData, activeNode]);
 
   return (
     <Box>
@@ -315,27 +340,35 @@ const PaperPage: NextPage<PaperPageProps> = ({ id }: { id: string }) => {
       ) : (
         <Box display='flex' p='0 $9'>
           <Box css={{ minWidth: '460px' }} width='460px'>
-            <Card css={{ padding: '$11 $9' }}>
-              <Text
-                css={{ flex: 1, display: 'flex', ai: 'center', mb: '$5' }}
-                size='$4'
-                weight='$4'
-                as='h3'
-              >
-                <Box as='span' flex={1}>
+            <Card css={{ padding: '$9', minHeight: 174 }}>
+              <Box css={{ flex: 1, display: 'flex', ai: 'center', mb: '$5' }}>
+                <Text
+                  size='$4'
+                  title={processedData?.title}
+                  weight='$4'
+                  as='h3'
+                  css={{
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    width: '100%',
+                    margin: 0,
+                  }}
+                >
                   {processedData?.title}
-                </Box>
-                <Tooltip css={{ width: '140px' }} content='Read the paper'>
-                  <Link
-                    css={{ fontSize: '24px' }}
-                    target='_blank'
-                    href={processedData?.openAccessPdf?.url}
-                  >
-                    📖
-                  </Link>
-                </Tooltip>
-              </Text>
-
+                </Text>
+                {processedData?.openAccessPdf?.url && (
+                  <Tooltip css={{ width: '140px' }} content='Read the paper'>
+                    <Link
+                      css={{ fontSize: '18px' }}
+                      target='_blank'
+                      href={processedData?.openAccessPdf?.url}
+                    >
+                      📖
+                    </Link>
+                  </Tooltip>
+                )}
+              </Box>
               <Text
                 css={{
                   display: '-webkit-box',
@@ -350,59 +383,121 @@ const PaperPage: NextPage<PaperPageProps> = ({ id }: { id: string }) => {
               >
                 {processedData?.abstract}
               </Text>
-              <Box mt='$5' display='flex' css={{ gap: '$4' }}>
+              <Box mt='$5' display='flex' ai='center' css={{ gap: '$4' }}>
+                Authors:
                 {processedData?.authors?.map((author: any) => (
-                  <Tooltip key={author.authorId} content={author.name}>
-                    <Avatar
-                      size='sm'
-                      squared
-                      key={author.authorId}
-                      text={author.name}
-                    />
-                  </Tooltip>
+                  <Link
+                    key={author.authorId}
+                    href={`/authors/${author.authorId}`}
+                  >
+                    <Tooltip content={author.name}>
+                      <Avatar
+                        style={{
+                          cursor: 'pointer',
+                        }}
+                        size='sm'
+                        squared
+                        key={author.authorId}
+                        text={author.name}
+                      />
+                    </Tooltip>
+                  </Link>
                 ))}
               </Box>
             </Card>
-            <Box width='460px' display='flex' ai='center' jc='space-between'>
+            <Box
+              mt='$9'
+              width='460px'
+              display='flex'
+              ai='center'
+              jc='space-between'
+            >
               <Tabs
                 tabs={[
                   {
-                    label: 'Citations',
+                    label: (
+                      <Text>Citations ({processedData.citations.length})</Text>
+                    ),
                     value: 'citations',
                     content: (
-                      <Box
-                        css={{
-                          maxHeight: 'calc(100vh - 330px)',
-                          overflow: 'auto',
-                        }}
-                      >
-                        {processedData.citations.map((paper: any) => (
-                          <CitationItem key={paper.paperId} data={paper} />
-                        ))}
-                      </Box>
+                      <CitationItemListContainer>
+                        {processedData.citations.length > 0 ? (
+                          processedData.citations.map((paper: any) => (
+                            <CitationItem
+                              onClick={onNodeClick}
+                              key={paper.paperId}
+                              data={paper}
+                            />
+                          ))
+                        ) : (
+                          <Text
+                            size='$4'
+                            css={{
+                              display: 'flex',
+                              flex: 1,
+                              ai: 'center',
+                              jc: 'center',
+                            }}
+                          >
+                            No citations found for this paper
+                          </Text>
+                        )}
+                      </CitationItemListContainer>
                     ),
                   },
                   {
-                    label: 'References',
+                    label: (
+                      <Text>
+                        References ({processedData.references.length})
+                      </Text>
+                    ),
                     value: 'references',
                     content: (
-                      <Box
-                        css={{
-                          maxHeight: 'calc(100vh - 330px)',
-                          overflow: 'auto',
-                        }}
-                      >
+                      <CitationItemListContainer>
                         {processedData.references.map((paper: any) => (
-                          <CitationItem key={paper.paperId} data={paper} />
+                          <CitationItem
+                            onClick={onNodeClick}
+                            key={paper.paperId}
+                            data={paper}
+                          />
                         ))}
-                      </Box>
+                      </CitationItemListContainer>
                     ),
                   },
                 ]}
               />
             </Box>
           </Box>
-          {combinedData?.nodes?.length > 0 && <Graph data={combinedData} />}
+          <Separator margin='10px' orientation='vertical' />
+          {graphMounted ? null : (
+            <Box
+              width='100%'
+              height='100vh'
+              display='flex'
+              ai='center'
+              jc='center'
+            >
+              <Loading />
+            </Box>
+          )}
+          <Box
+            css={{
+              width: graphMounted ? '100%' : 0,
+              visibility: graphMounted ? 'visible' : 'hidden',
+            }}
+          >
+            {combinedData?.nodes?.length > 0 && (
+              <Graph
+                onActiveNodeChange={(id) => setActiveNode(id)}
+                onMount={() => setGraphMounted(true)}
+                activeNode={activeNode}
+                data={combinedData}
+              />
+            )}
+            {activeNodeData?.paperId && (
+              <PublicationCard paper={activeNodeData} />
+            )}
+          </Box>
         </Box>
       )}
     </Box>
