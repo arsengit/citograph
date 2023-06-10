@@ -99,7 +99,7 @@ export default function Author({ id }: any) {
   }
 
   function onTabClick(e: React.SyntheticEvent<MouseEvent>) {
-    const target = e.currentTarget as HTMLDivElement;
+    const target = e?.currentTarget as any;
     setTab(target.id);
   }
 
