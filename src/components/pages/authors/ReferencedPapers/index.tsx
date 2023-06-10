@@ -14,8 +14,6 @@ function ReferencedPapers({ data }: any) {
   const currentItems = React.useMemo(() => {
     return data.slice(startIndex, endIndex);
   }, [data, startIndex, endIndex]);
-
-  //   console.log(currentItems, startIndex, endIndex);
   return (
     <Box display='flex' fd='column' css={{ gap: '$9' }}>
       <Box

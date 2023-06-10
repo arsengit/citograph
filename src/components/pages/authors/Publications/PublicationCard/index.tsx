@@ -20,17 +20,22 @@ function PublicationCard({ paper }: any) {
           flex='1'
           display='flex'
           className='ScrollBar__hidden'
-          css={{ ml: '$5', gap: '$5', overflow: 'auto', width: '50%' }}
+          css={{ ml: '$5', gap: '$5', overflow: 'auto', width: '40%' }}
         >
           {paper.authors.map((author: any) => (
-            <Tooltip key={author.authorId} content={author.name}>
-              <Avatar
-                size='xs'
-                squared
-                key={author.authorId}
-                text={author.name}
-              />
-            </Tooltip>
+            <Link key={author.authorId} href={`/authors/${author.authorId}`}>
+              <Tooltip content={author.name}>
+                <Avatar
+                  style={{
+                    cursor: 'pointer',
+                  }}
+                  size='xs'
+                  squared
+                  key={author.authorId}
+                  text={author.name}
+                />
+              </Tooltip>
+            </Link>
           ))}
         </Box>
         <Text css={{ ml: '$5' }}>Year: {paper.year}</Text>
@@ -48,6 +53,12 @@ function PublicationCard({ paper }: any) {
       >
         {paper.abstract}
       </Text>
+      <Box>
+        <Text weight={'$4'} css={{ mr: '$9' }}>
+          Influential citation count: {paper.influentialCitationCount}
+        </Text>
+        <Text weight={'$4'}>Citations: {paper.citationCount}</Text>
+      </Box>
     </PublicationCardContainer>
   );
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import { useQuery } from 'react-query';
 
 import Link from 'next/link';
-import { Avatar, Card, Input, Loading, Tooltip } from '@nextui-org/react';
+import { Card, Input, Loading } from '@nextui-org/react';
 
 import { useDebounce } from '@/hooks/useDebounce';
 import {

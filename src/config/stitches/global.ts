@@ -1,7 +1,7 @@
 export const global: { [key: string]: any } = {
   '*': {
-    margin: 0,
-    padding: 0,
+    margin: '0',
+    padding: '0',
     boxSizing: 'border-box',
     '&:focus-visible': {
       outline: 'none',

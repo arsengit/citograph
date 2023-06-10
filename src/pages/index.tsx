@@ -19,6 +19,11 @@ export default function Home(): React.FunctionComponentElement<React.ReactNode> 
       <Text as='h1' css={{ textAlign: 'center', fontSize: 44, mb: '$20' }}>
         Welcome to Citograph 👋
       </Text>
+      <Text as='h2' css={{ textAlign: 'center', fontSize: 24, mb: '$20' }}>
+        Discover Connections: Citograph - Visualize and Explore Citations and
+        References with Ease! 🚀
+      </Text>
+
       <Box
         css={{
           padding: '$6',
