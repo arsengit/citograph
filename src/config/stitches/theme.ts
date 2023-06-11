@@ -146,6 +146,10 @@ export const primaryTheme: ConfigType.Theme = {
     black120: '#000000',
     // mark colors
     mark: '#fffac1',
+
+    border10: '#EFF0F2',
+    border20: '#DEE0E4',
+    border30: '#CED1D7',
   },
   fonts: {
     inter: 'Inter, sans-serif',

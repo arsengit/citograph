@@ -315,6 +315,57 @@ const PaperPage: NextPage<PaperPageProps> = ({ id }: { id: string }) => {
     return { nodes: [], links: [] };
   }, [processedData]);
 
+  const bubbleData = React.useMemo(() => {
+    const citations = {
+      label: 'Citations',
+      data: processedData?.citations?.map((citation: any) => {
+        return {
+          x: citation.year,
+          y: citation.influentialCitationCount,
+          r: 8,
+          label: citation.title,
+          id: citation.paperId,
+          citations: citation.citationCount,
+        };
+      }),
+      backgroundColor: 'rgb(97, 205, 187)',
+    };
+    const references = {
+      label: 'References',
+      data: processedData?.references?.map((reference: any) => {
+        return {
+          x: reference.year,
+          y: reference.influentialCitationCount,
+          r: 8,
+          label: reference.title,
+          id: reference.paperId,
+          citations: reference.citationCount,
+        };
+      }),
+      backgroundColor: 'rgb(232, 193, 160)',
+    };
+
+    const main = {
+      label: 'Main',
+      title: processedData?.title,
+      citations: processedData?.citationCount,
+      data: [
+        {
+          label: processedData?.title,
+          id: processedData?.paperId,
+          x: processedData?.year,
+          y: processedData?.influentialCitationCount || 5,
+          r: 8,
+        },
+      ],
+      backgroundColor: 'rgb(244, 117, 96)',
+    };
+
+    return {
+      datasets: [citations, references, main],
+    };
+  }, [processedData]);
+
   const onNodeClick = (nodeId: any) => {
     setActiveNode([nodeId]);
   };
@@ -488,6 +539,7 @@ const PaperPage: NextPage<PaperPageProps> = ({ id }: { id: string }) => {
           >
             {combinedData?.nodes?.length > 0 && (
               <Graph
+                bubbleData={bubbleData}
                 onActiveNodeChange={(id) => setActiveNode(id)}
                 onMount={() => setGraphMounted(true)}
                 activeNode={activeNode}

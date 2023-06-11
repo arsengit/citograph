@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@excalidraw/excalidraw": "0.14.2",
     "@next/font": "13.1.6",
     "@nextui-org/react": "^1.0.0-beta.12",
     "@nivo/colors": "0.83.0",
@@ -24,13 +23,14 @@
     "@types/node": "18.11.18",
     "@types/react": "18.0.27",
     "@types/react-dom": "18.0.10",
+    "chart.js": "4.3.0",
     "eslint": "8.33.0",
     "eslint-config-next": "13.1.6",
     "formik": "^2.2.9",
-    "fuse.js": "^6.6.2",
     "lodash-es": "4.17.21",
     "next": "13.1.6",
     "react": "18.2.0",
+    "react-chartjs-2": "5.2.0",
     "react-dom": "18.2.0",
     "react-hotkeys-hook": "^4.3.8",
     "react-query": "^3.39.3",

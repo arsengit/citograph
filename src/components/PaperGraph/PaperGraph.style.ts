@@ -5,7 +5,7 @@ const GraphContainer = styled('div', {
   // width: '100%',
   bc: '#fff',
   p: '$5',
-  height: 'calc(100vh - 240px)',
+  height: 'calc(100vh - 260px)',
   border: '1px solid #eee',
   borderRadius: '8px',
   overflow: 'hidden',

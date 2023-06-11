@@ -3,7 +3,7 @@ import { styled } from '@/config/stitches';
 const CitationItemListContainer = styled('div', {
   borderTop: '1px solid #eee',
   mt: '$9',
-  height: 'calc(100vh - 318px)',
+  height: 'calc(100vh - 328px)',
   overflow: 'auto',
   display: 'flex',
   fd: 'column',

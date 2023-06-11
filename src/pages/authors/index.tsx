@@ -39,7 +39,7 @@ export default function Authors({ authors }: any) {
     setSearchTerm(value);
   };
   return (
-    <div>
+    <Box height='calc(100vh - 100px)' display='flex' ai='center' jc='center'>
       <SearchBoxWrapper>
         <Text
           as='h2'
@@ -52,7 +52,7 @@ export default function Authors({ authors }: any) {
           onChange={handleSearch}
           value={searchTerm}
           width='500px'
-          placeholder='Search by author, article or keyword'
+          placeholder='Search by author name'
           contentRight={isLoading ? <Loading size='xs' /> : null}
         />
         {!isLoading && data?.data && (
@@ -97,6 +97,6 @@ export default function Authors({ authors }: any) {
           </Card>
         )}
       </SearchBoxWrapper>
-    </div>
+    </Box>
   );
 }
