@@ -14,22 +14,26 @@ import Publications from '@/components/pages/authors/Publications';
 import CitingAuthors from '@/components/pages/authors/CitingPapers';
 import ReferencedAuthors from '@/components/pages/authors/ReferencedPapers';
 
-const fetchAuthorById = async (id: string) => {
-  const author = await fetch(
-    `https://api.semanticscholar.org/graph/v1/author/${id}?fields=name,url,aliases,affiliations,homepage,paperCount,citationCount,hIndex,papers.paperId,papers.title,papers.abstract,papers.venue,papers.year,papers.citationCount,papers.fieldsOfStudy,papers.externalIds,papers.authors`,
-  ).then((res) => res.json());
-  return {
-    ...author,
-  };
+const fetchAuthorById = async (id) => {
+  const response = await fetch(`/api/getAuthorById?id=${id}`);
+
+  if (!response.ok) {
+    throw new Error('An error occurred while fetching the author');
+  }
+
+  const author = await response.json();
+  return author;
 };
 
-const fetchPaperByAuthorId = async (id: string) => {
-  const paper = await fetch(
-    `https://api.semanticscholar.org/graph/v1/author/${id}/papers?fields=title,abstract,year,venue,openAccessPdf,authors,citations,citations.paperId,citations.title,citations.citationCount,citations.influentialCitationCount,citations.year,citations.authors,citations.abstract,references.authors,references.paperId,references.title,references.url,references.venue,references.year,references.citationCount,references.influentialCitationCount,references.abstract`,
-  ).then((res) => res.json());
-  return {
-    ...paper,
-  };
+const fetchPaperByAuthorId = async (id) => {
+  const response = await fetch(`/api/getPaperByAuthorId?id=${id}`);
+
+  if (!response.ok) {
+    throw new Error('An error occurred while fetching the paper');
+  }
+
+  const paper = await response.json();
+  return paper;
 };
 
 export default function Author({ id }: any) {

@@ -28,37 +28,48 @@ type PaperPageProps = {
   id: string;
 };
 
-const fetchMainPaperById = async (id: string) => {
-  const paper = await fetch(
-    `https://api.semanticscholar.org/graph/v1/paper/${id}?fields=title,abstract,year,venue,openAccessPdf,authors,citations,citations.paperId,citations.title,citations.citationCount,citations.influentialCitationCount,citations.year,citations.authors,references.authors,references.paperId,references.title,references.url,references.venue,references.year,references.citationCount,references.influentialCitationCount,references.abstract`,
-  ).then((res) => res.json());
-  return {
-    ...paper,
-  };
+const fetchMainPaperById = async (id) => {
+  const response = await fetch(`/api/getPaperById?id=${id}`);
+
+  if (!response.ok) {
+    throw new Error('An error occurred while fetching the main paper');
+  }
+
+  const paper = await response.json();
+  return paper;
 };
 
 const fetchCitations = async (paper: any) => {
-  return Promise.all(
-    paper?.citations.map((citation: any) =>
-      fetch(
-        `https://api.semanticscholar.org/graph/v1/paper/${citation.paperId}?fields=title,citations.paperId`,
-      )
-        .then((res) => res.json())
-        .catch(() => null),
-    ),
-  );
+  if (paper?.paperId) {
+    const response = await fetch('/api/getCitations', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ paper }),
+    });
+
+    if (!response.ok) {
+      throw new Error('An error occurred while fetching citations');
+    }
+    const citations = await response.json();
+    return citations;
+  }
 };
 
-const fetchReferences = async (paper: any) => {
-  return Promise.all(
-    paper?.references.map((reference: any) =>
-      fetch(
-        `https://api.semanticscholar.org/graph/v1/paper/${reference.paperId}?fields=title,citations.paperId`,
-      )
-        .then((res) => res.json())
-        .catch(() => null),
-    ),
-  );
+const fetchReferences = async (paper) => {
+  if (paper?.paperId) {
+    const response = await fetch('/api/getReferences', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ paper }),
+    });
+
+    if (!response.ok) {
+      throw new Error('An error occurred while fetching references');
+    }
+
+    const references = await response.json();
+    return references;
+  }
 };
 
 const PaperPage: NextPage<PaperPageProps> = ({ id }: { id: string }) => {
